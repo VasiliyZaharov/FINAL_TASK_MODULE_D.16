@@ -1,0 +1,46 @@
+{% extends 'flatpages/default.html' %}
+
+<head>
+    {{ forms.media }}
+</head>
+
+{% block title %}
+Article
+{% endblock title %}
+
+
+{% block content %}
+
+<h1 style="text-align: center;margin-top: 20px;font-family: Candara;"><em>ЛЕНТА ОБЪЯВЛЕНИЙ</em></h1>
+<!--<p>&nbsp;</p>-->
+<hr>
+<form style="text-align: midle;" action="" method="get">
+    {{ filterset.form.as_p }}
+    <input type="submit" value="Найти" />
+</form>
+
+{% for i in article %}
+
+<ul>
+    <hr>
+    <p>&nbsp;</p>
+    <table >
+        <tbody>
+        <tr>
+            <td><h1 style="text-align: left;margin-top: 20px;font-family: Candara;"><em>Заголовок: {{ i.title }} </em></h1></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td style="width: 800px;"><p style="text-align: right; font-size:20px; font-family: Candara;"><em>Категории: {{ i.category }}</em></p></td>
+        </tr>
+        </tbody>
+    </table>
+    <p>&nbsp;</p>
+    {% autoescape off %}{{ i.text }}{% endautoescape %}
+    <p>&nbsp;</p>
+    {{ i.time_in }}
+    <p>&nbsp;</p>
+</ul>
+{% endfor %}
+
+{% endblock content %}
