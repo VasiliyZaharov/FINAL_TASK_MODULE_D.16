@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.urls import reverse_lazy
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from .models import Article
@@ -29,7 +30,8 @@ class ArticleDetail(DetailView):
     context_object_name = 'post'
 
 
-class ArticleCreate(CreateView):
+class ArticleCreate(LoginRequiredMixin, CreateView):
+    raise_exception = True
     form_class = ArticleForm
     model = Article
     template_name = 'article_edit.html'
