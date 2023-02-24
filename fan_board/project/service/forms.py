@@ -8,13 +8,13 @@ class ArticleForm(forms.ModelForm):
     class Meta:
         model = Article
         fields = ['category',
-                  'author',
+                  # 'author',
                   'title',
                   'text',
                   ]
         labels = {
             'category': 'Категория',
-            'author': 'Автор',
+            # 'author': 'Автор',
             'title': 'Заголовок',
             'text': 'Содержание',
         }

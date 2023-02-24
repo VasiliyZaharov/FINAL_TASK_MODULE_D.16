@@ -10,8 +10,14 @@ post
 
 
 {% block content %}
-
 <h1 style="text-align: center;margin-top: 20px;font-family: Candara;"><em>Объявление № {{ post.pk }}</em></h1>
+
+{% if request.user == post.author %}
+<p><a href="/article/{{ post.id }}/update">Изменить</a></p>
+<p><a href="/article/{{ post.id }}/delete">Удалить</a></p>
+{% else %}
+
+{% endif %}
 <p>&nbsp;</p>
 
 
