@@ -4,6 +4,7 @@ from django.core.exceptions import ValidationError
 from .models import Article
 
 class ArticleForm(forms.ModelForm):
+
     class Meta:
         model = Article
         fields = ['category',

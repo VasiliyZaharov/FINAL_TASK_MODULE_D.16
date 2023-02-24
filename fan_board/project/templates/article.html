@@ -38,6 +38,7 @@ Article
     {% autoescape off %}{{ i.text }}{% endautoescape %}
     <p>&nbsp;</p>
     {{ i.time_in }}
+    <p><a href="/article/{{ i.id }}">перейти к объявлению</a></p>
     <p>&nbsp;</p>
 </ul>
 {% endfor %}
