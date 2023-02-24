@@ -4,9 +4,10 @@ from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.views.generic.edit import FormMixin
 from .models import Article
 from .filters import ArticleFilter
-from .forms import ArticleForm
+from .forms import ArticleForm, CommentForm
 
 
 class ArticleList(ListView):
@@ -26,10 +27,29 @@ class ArticleList(ListView):
         return context
 
 
-class ArticleDetail(DetailView):
+class ArticleDetail(FormMixin, DetailView):
     model = Article
     template_name = 'post.html'
     context_object_name = 'post'
+    form_class = CommentForm
+    success_msg = 'Комментарий успешно создан, ожидайте модерации'
+
+    def get_success_url(self):
+        return reverse_lazy('article_detail', kwargs={'pk': self.get_object().id})
+
+    def post(self, request, *args, **kwargs):
+        form = self.get_form()
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.article = self.get_object()
+        self.object.author = self.request.user
+        self.object.save()
+        return super().form_valid(form)
 
 
 class ArticleCreate(LoginRequiredMixin, CreateView):

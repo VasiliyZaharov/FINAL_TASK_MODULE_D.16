@@ -1,7 +1,8 @@
 from django import forms
 from django.core.exceptions import ValidationError
 
-from .models import Article
+
+from .models import Article, Comments
 
 class ArticleForm(forms.ModelForm):
 
@@ -32,3 +33,13 @@ class ArticleForm(forms.ModelForm):
         if title and title[0].islower():
             raise ValidationError('Начните объявление с заглавной буквы.')
         return title
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comments
+        fields = ('text',)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields:
+            self.fields[field].widget.attrs['class'] = 'form-control'

@@ -47,6 +47,42 @@ post
 <!--<div>{% autoescape off %}{{ article }}{% endautoescape %}</div>-->
 
 <!--<img src="/media/uploads/my_image.jpg" />-->
+<p style="text-align: center;">&nbsp;</p>
+   {% if messages %}
+<div class="alert.alert-success">
+    {% for m in messages %}
+         {{m}}
+    {% endfor %}
+</div>
+    {% endif %}
+<p style="text-align: center;"><strong>Комментарии</strong></p>
+<hr>
+
+
+{% for item in post.comments.all %}
+
+<li style="text-align: left;">
+    Дата создания: {{item.time_in}} <br>
+    Автор комментария: {{item.author}} <br>
+    Статус комментария: {{item.status}} <br><br>
+
+    {{item.text}}
+<p style="text-align: center;">&nbsp;</p>
+</li>
+
+{% endfor %}
+<p style="text-align: center;">&nbsp;</p>
+
+
+<form action="" id="add_form" method="post">
+    {% csrf_token %}
+         {{ form.as_p }}
+</form>
+
+
+<button form="add_form" type="submit" class="btn btn-primary">Добавить</button>
+
+
 {% endblock content %}
 
 <h1>{{ post.title }}</h1>

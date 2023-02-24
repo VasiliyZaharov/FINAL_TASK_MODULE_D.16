@@ -37,20 +37,18 @@ class Article(models.Model):
         verbose_name_plural = 'Статьи'
 
 
-class UserResponse(models.Model):
-    author = models.OneToOneField(User, on_delete=models.CASCADE)
-    text = models.TextField()
-    article = models.ForeignKey(Article, on_delete=models.CASCADE)
-    status = models.BooleanField(default=False)
+class Comments(models.Model):
+    article = models.ForeignKey(Article, on_delete=models.CASCADE, verbose_name='Статья', related_name='comments')
+    author = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Автор комментария')
+    time_in = models.DateTimeField(auto_now_add=True)
+    text = models.CharField(max_length=64, verbose_name='Текст комментария')
+    status = models.BooleanField(verbose_name='Статус', default=False)
+
+    class Meta:
+        verbose_name='комментарий'
+        verbose_name_plural = 'комментарии'
 
     def __str__(self):
-        return f'{self.author}:{self.text}'
-
-    class Response(models.Model):
-        author = models.ForeignKey(User, on_delete=models.CASCADE)
-        article = models.ForeignKey(Article, on_delete=models.CASCADE)
-        text = models.TextField(verbose_name='Текст')
-        status = models.BooleanField(default=False)
-        dateCreation = models.DateTimeField(auto_now_add=True)
+        return f'Пользователь {self.author} написал: {self.text}'
 
 
