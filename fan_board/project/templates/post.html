@@ -40,7 +40,8 @@ post
     <p>&nbsp;</p>
     {% autoescape off %}{{ post.text }}{% endautoescape %}
     <p>&nbsp;</p>
-    {{ post.time_in }}
+    <p>Дата публикации: {{ post.time_in }}</p>
+    <p>Автор объявления: {{ post.author }}</p>
 <!--    <p style="text-align: right; font-size:20px; font-family: Candara;"><em>Категории: {{ i.category }} </em></p>-->
 </ul>
 
@@ -60,7 +61,7 @@ post
 
 
 {% for item in post.comments.all %}
-
+{% if item.status == True %}
 <li style="text-align: left;">
     Дата создания: {{item.time_in}} <br>
     Автор комментария: {{item.author}} <br>
@@ -69,7 +70,7 @@ post
     {{item.text}}
 <p style="text-align: center;">&nbsp;</p>
 </li>
-
+{% endif %}
 {% endfor %}
 <p style="text-align: center;">&nbsp;</p>
 

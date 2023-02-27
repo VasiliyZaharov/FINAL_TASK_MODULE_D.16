@@ -5,7 +5,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.views.generic.edit import FormMixin
-from .models import Article
+from .models import Article, Comments
 from .filters import ArticleFilter
 from .forms import ArticleForm, CommentForm
 
@@ -81,3 +81,11 @@ class ArticleDelete(LoginRequiredMixin, DeleteView):
     template_name = 'article_delete.html'
     success_url = reverse_lazy('article')
 
+class CommentsList(ListView):
+    model = Comments
+    # ordering = '-id'
+    template_name = 'comments_page.html'
+    context_object_name = 'comments'
+
+    # def get_queryset(self):
+    #     return Comments.objects.filter(post_author=self.request.user)

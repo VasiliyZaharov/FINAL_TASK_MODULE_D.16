@@ -37,12 +37,17 @@ class Article(models.Model):
         verbose_name_plural = 'Статьи'
 
 
+# class StatusFilterComments(models.Manager):
+#     def get_queryset(self):
+#         return super().get_queryset().filter(status=False)
+
 class Comments(models.Model):
     article = models.ForeignKey(Article, on_delete=models.CASCADE, verbose_name='Статья', related_name='comments')
     author = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Автор комментария')
     time_in = models.DateTimeField(auto_now_add=True)
     text = models.CharField(max_length=64, verbose_name='Текст комментария')
     status = models.BooleanField(verbose_name='Статус', default=False)
+    # object = StatusFilterComments()
 
     class Meta:
         verbose_name='комментарий'
