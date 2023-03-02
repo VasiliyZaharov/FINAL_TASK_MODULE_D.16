@@ -1,21 +1,18 @@
 from django import forms
 from django.core.exceptions import ValidationError
 
-
 from .models import Article, Comments
 
-class ArticleForm(forms.ModelForm):
 
+class ArticleForm(forms.ModelForm):
     class Meta:
         model = Article
         fields = ['category',
-                  # 'author',
                   'title',
                   'text',
                   ]
         labels = {
             'category': 'Категория',
-            # 'author': 'Автор',
             'title': 'Заголовок',
             'text': 'Содержание',
         }
@@ -33,6 +30,7 @@ class ArticleForm(forms.ModelForm):
         if title and title[0].islower():
             raise ValidationError('Начните объявление с заглавной буквы.')
         return title
+
 
 class CommentForm(forms.ModelForm):
     class Meta:

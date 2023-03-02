@@ -1,12 +1,14 @@
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect
-from django.shortcuts import render, redirect
-from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views import generic
 
+from django.shortcuts import redirect
+
+from django.urls import reverse_lazy
+
+from django.views import generic
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.views.generic.edit import FormMixin
+
 from .models import Article, Comments
 from .filters import ArticleFilter, ArticleCommentsFilter
 from .forms import ArticleForm, CommentForm
@@ -78,12 +80,15 @@ class ArticleUpdate(LoginRequiredMixin, UpdateView):
             return self.handle_no_permission()
         return kwargs
 
+
 class ArticleDelete(LoginRequiredMixin, DeleteView):
     model = Article
     template_name = 'article_delete.html'
     success_url = reverse_lazy('article')
 
-class CommentsList(ListView):
+
+class CommentsList(LoginRequiredMixin, ListView):
+    raise_exception = True
     model = Comments
     # ordering = '-id'
     template_name = 'comments_page.html'
@@ -93,7 +98,9 @@ class CommentsList(ListView):
         queryset = Comments.objects.filter(author=self.request.user).all()
         return queryset
 
-class UserPostCommentList(generic.ListView):
+
+class UserPostCommentList(LoginRequiredMixin, generic.ListView):
+    raise_exception = True
     model = Comments
     template_name = 'user_posts_comments.html'
     context_object_name = 'user_posts_comments'
@@ -101,11 +108,6 @@ class UserPostCommentList(generic.ListView):
     def get_queryset(self):
         queryset = Comments.objects.filter(article__author=self.request.user).all()
         return queryset
-
-    # def get_queryset(self):
-    #     queryset = super().get_queryset()
-    #     self.filterset = ArticleCommentsFilter(self.request.GET, queryset)
-    #     return self.filterset.qs
 
     def get_queryset(self):
         queryset = Comments.objects.filter(article__author=self.request.user).order_by('-time_in').all()
@@ -118,17 +120,18 @@ class UserPostCommentList(generic.ListView):
         context['filterset'] = self.filterset
         return context
 
+
 @login_required
 def comments_accept(request, **kwargs):
     response = Comments.objects.get(id=kwargs.get('pk'))
     response.status = True
     response.save()
     return redirect(request.META.get('HTTP_REFERER'))
-    # return redirect('article/')
+
 
 @login_required
 def comments_delete(request, **kwargs):
     response = Comments.objects.get(id=kwargs.get('pk'))
     response.delete()
     return redirect(request.META.get('HTTP_REFERER'))
-    # return redirect('article/')
+

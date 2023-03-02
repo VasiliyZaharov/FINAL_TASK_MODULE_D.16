@@ -1,6 +1,7 @@
 import django_filters
 from django_filters import FilterSet, ModelChoiceFilter, CharFilter, DateFilter
-from .models import Article, Comments
+
+from .models import Article
 from django.contrib.auth.models import User
 from django.forms import DateInput
 
@@ -10,7 +11,7 @@ class ArticleFilter(FilterSet):
         queryset=User.objects.all(),
         lookup_expr='exact',
         label=('Автор'),
-        empty_label='all'
+        empty_label='Все авторы'
     )
 
     title = CharFilter(
@@ -30,15 +31,18 @@ class ArticleFilter(FilterSet):
         widget=DateInput(format='%Y-%m-%d', attrs={'type': 'date'}),
     )
 
+
     class Meta:
         model = Article
         fields = {
             'category': ['exact']
         }
+
+
 class ArticleCommentsFilter(FilterSet):
     article = django_filters.ModelChoiceFilter(
         field_name='article',
         queryset=None,
-        label='Article',
-        empty_label='Select a article',
+        label='',
+        empty_label='Выбрать заголовок',
     )

@@ -11,36 +11,36 @@ Article
 
 {% block content %}
 
-{{request.user}}
+
 <h1 style="text-align: center;margin-top: 20px;font-family: Candara;"><em>ЛЕНТА ОБЪЯВЛЕНИЙ</em></h1>
 <!--<p>&nbsp;</p>-->
 <hr>
 <form style="text-align: midle;" action="" method="get">
     {{ filterset.form.as_p }}
-    <input type="submit" value="Найти" />
+    <input class="btn btn-primary" type="submit" value="Найти">
 </form>
 
 {% for i in article %}
 <ul>
     <hr>
     <p>&nbsp;</p>
-    <table >
+
+    <table style="height: 101px;" width="1200">
         <tbody>
         <tr>
-            <td><h1 style="text-align: left;margin-top: 20px;font-family: Candara;"><em>Заголовок: {{ i.title }} </em></h1></td>
-        </tr>
-        <tr>
-            <td></td>
-            <td style="width: 800px;"><p style="text-align: right; font-size:20px; font-family: Candara;"><em>Категории: {{ i.category }}</em></p></td>
+            <td><a class="nav-link" href="/article/{{ i.id }}"><h1 style="text-align: left;margin-top: 20px;font-family: Candara;"><em>Заголовок: {{ i.title }} </em></h1></a></td>
+            <td><p style="text-align: right; font-size:20px; font-family: Candara;"><em>Категория: {{ i.category }}</em></p></td>
         </tr>
         </tbody>
     </table>
+
+
     <p>&nbsp;</p>
     {% autoescape off %}{{ i.text }}{% endautoescape %}
     <p>&nbsp;</p>
-    <p>Дата публикации: {{ i.time_in }}</p>
-    <p>Автор объявления: {{ i.author }}</p>
-    <p><a href="/article/{{ i.id }}">перейти к объявлению</a></p>
+    <p style="font-family: Candara;"><em>Дата публикации: {{ i.time_in }}</em></p>
+    <p style="font-family: Candara;"><em>Автор объявления: {{ i.author }}</em></p>
+<!--    <p><a href="/article/{{ i.id }}">перейти к объявлению</a></p>-->
     <p>&nbsp;</p>
 </ul>
 {% endfor %}

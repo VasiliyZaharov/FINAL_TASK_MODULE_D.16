@@ -17,16 +17,25 @@
             <div class="container">
                 <a class="navbar-brand" href="/article/" style="font-family: Candara;"><font size="5"><em>ЛЕНТА</em></font></a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                {% if user.is_authenticated %}
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                         <li class="nav-item"><a class="nav-link" href="/article/create/" style="font-family: Candara;"><font size="4"><em>Создать объявление</em></font></a></li>
                         <li class="nav-item"><a class="nav-link" href="/article/comments_page/" style="font-family: Candara;"><font size="4"><em>Мои комментарии</em></font></a></li>
                         <li class="nav-item"><a class="nav-link" href="/article/user_posts_comments/" style="font-family: Candara;"><font size="4"><em>Комментарии моих объявлений</em></font></a></li>
-                        <li class="nav-item"><a class="nav-link" href="/accounts/signup/" style="font-family: Candara;"><font size="4"><em>Регистрация</em></font></a></li>
-                        <li class="nav-item"><a class="nav-link" href="/accounts/login/" style="font-family: Candara;"><font size="4"><em>Войти</em></font></a></li>
-                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="/accounts/logout/" style="font-family: Candara;"><font size="4"><em>Выйти</em></font></a></li>
+<!--                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="/accounts/logout/" style="font-family: Candara;"><font size="4"><em>Выйти из аккаунта {{request.user.username}} </em></font></a></li>-->
+                        <li><a class="btn btn-danger text-nowrap" href="/accounts/logout/" role="button" style="font-family: Candara;"><font size="4"><em>Выйти из {{request.user.username}}</em></front></a></li>
                     </ul>
                 </div>
+                {%else%}
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        <li><a class="btn btn-secondary" href="/accounts/signup/" role="button">Регистрация</a></li>
+                        <p>&nbsp;</p>
+                        <li><a class="btn btn-primary" href="/accounts/login/" role="button">Войти</a></li>
+                    </ul>
+                </div>
+                {%endif%}
             </div>
         </nav>
         <!-- Page content-->
