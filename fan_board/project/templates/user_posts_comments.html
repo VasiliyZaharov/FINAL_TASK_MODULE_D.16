@@ -1,0 +1,27 @@
+{% extends 'flatpages/default.html' %}
+
+{% block content %}
+<h1 style="text-align: center;margin-top: 20px;font-family: Candara;"><em>КОММЕНТАРИИ МОИХ ОБЪЯВЛЕНИЙ</em></h1>
+
+<hr>
+<form style="text-align: midle;" action="" method="get">
+    {{ filterset.form.as_p }}
+    <input type="submit" value="Найти" />
+</form>
+
+
+<hr>
+{%if user_posts_comments%}
+{%for i in user_posts_comments%}
+{{i.article}}
+{{i.text}}
+{{i.time_in}}
+<a class="" href="{% url 'comments_accept' i.id %}"><strong>Accept comment</strong></a>
+<a class="" href="{% url 'comments_delete' i.id %}"><strong>delete</strong></a>
+<br>
+{%endfor%}
+{%else%}
+<h2>Комментарии отсутствуют</h2>
+{%endif%}
+
+{% endblock content %}

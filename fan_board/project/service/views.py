@@ -1,12 +1,14 @@
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views import generic
 
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.views.generic.edit import FormMixin
 from .models import Article, Comments
-from .filters import ArticleFilter
+from .filters import ArticleFilter, ArticleCommentsFilter
 from .forms import ArticleForm, CommentForm
 
 
@@ -87,5 +89,46 @@ class CommentsList(ListView):
     template_name = 'comments_page.html'
     context_object_name = 'comments'
 
+    def get_queryset(self):
+        queryset = Comments.objects.filter(author=self.request.user).all()
+        return queryset
+
+class UserPostCommentList(generic.ListView):
+    model = Comments
+    template_name = 'user_posts_comments.html'
+    context_object_name = 'user_posts_comments'
+
+    def get_queryset(self):
+        queryset = Comments.objects.filter(article__author=self.request.user).all()
+        return queryset
+
     # def get_queryset(self):
-    #     return Comments.objects.filter(post_author=self.request.user)
+    #     queryset = super().get_queryset()
+    #     self.filterset = ArticleCommentsFilter(self.request.GET, queryset)
+    #     return self.filterset.qs
+
+    def get_queryset(self):
+        queryset = Comments.objects.filter(article__author=self.request.user).order_by('-time_in').all()
+        self.filterset = ArticleCommentsFilter(self.request.GET, queryset)
+        self.filterset.form.fields['article'].queryset = Article.objects.filter(author=self.request.user)
+        return self.filterset.qs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['filterset'] = self.filterset
+        return context
+
+@login_required
+def comments_accept(request, **kwargs):
+    response = Comments.objects.get(id=kwargs.get('pk'))
+    response.status = True
+    response.save()
+    return redirect(request.META.get('HTTP_REFERER'))
+    # return redirect('article/')
+
+@login_required
+def comments_delete(request, **kwargs):
+    response = Comments.objects.get(id=kwargs.get('pk'))
+    response.delete()
+    return redirect(request.META.get('HTTP_REFERER'))
+    # return redirect('article/')

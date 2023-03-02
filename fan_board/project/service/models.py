@@ -33,7 +33,7 @@ class Article(models.Model):
         return reverse('article_detail', args=[str(self.pk)])
 
     class Meta:
-        verbose_name='статью'
+        verbose_name = 'статью'
         verbose_name_plural = 'Статьи'
 
 
@@ -55,5 +55,6 @@ class Comments(models.Model):
 
     def __str__(self):
         return f'Пользователь {self.author} написал: {self.text}'
+
 
 

@@ -1,5 +1,6 @@
+import django_filters
 from django_filters import FilterSet, ModelChoiceFilter, CharFilter, DateFilter
-from .models import Article
+from .models import Article, Comments
 from django.contrib.auth.models import User
 from django.forms import DateInput
 
@@ -34,3 +35,10 @@ class ArticleFilter(FilterSet):
         fields = {
             'category': ['exact']
         }
+class ArticleCommentsFilter(FilterSet):
+    article = django_filters.ModelChoiceFilter(
+        field_name='article',
+        queryset=None,
+        label='Article',
+        empty_label='Select a article',
+    )
