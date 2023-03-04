@@ -36,7 +36,7 @@ Article
 
 
     <p>&nbsp;</p>
-    {% autoescape off %}{{ i.text }}{% endautoescape %}
+<p style="text-align: center;">{{i.text|safe}}</p>
     <p>&nbsp;</p>
     <p style="font-family: Candara;"><em>Дата публикации: {{ i.time_in }}</em></p>
     <p style="font-family: Candara;"><em>Автор объявления: {{ i.author }}</em></p>

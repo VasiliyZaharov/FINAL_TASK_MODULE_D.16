@@ -8,7 +8,7 @@
 post
 {% endblock title %}
 
-
+{% load static %}
 {% block content %}
 <h1 style="text-align: center;margin-top: 20px;font-family: Candara;"><em>Объявление № {{ post.pk }}</em></h1>
 
@@ -76,6 +76,7 @@ post
 {% if user.is_authenticated %}
     <form action="" id="add_form" method="post">
         {% csrf_token %}
+        {{ form.media }}
         {{ form.as_p }}
     </form>
 

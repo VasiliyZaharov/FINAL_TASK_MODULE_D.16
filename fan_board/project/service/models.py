@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 
 from django.urls import reverse
 
+from ckeditor.fields import RichTextField
 
 class Article(models.Model):
     TYPE = (
@@ -22,7 +23,7 @@ class Article(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='автор')
     author_id = author.primary_key
     title = models.CharField(max_length=64, verbose_name='заголовок')
-    text = models.CharField(max_length=64, verbose_name='текст')
+    text = RichTextField()
     category = models.CharField(max_length=11, choices=TYPE, default='tank', verbose_name='категория')
     time_in = models.DateTimeField(auto_now_add=True)
 
